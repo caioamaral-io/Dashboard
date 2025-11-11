@@ -1,9 +1,11 @@
-import { TrendingUp, Inbox, Calendar } from "lucide-react"
+import { TrendingUp } from "lucide-react"
 import { Sidebar, SidebarHeader, SidebarContent, SidebarFooter, SidebarGroupLabel, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarSeparator } from "@/components/ui/sidebar"
 import Link from "next/link";
 import Image from "next/image";
 import Github from "@/components/icons/Github";
 import Overview from "@/components/icons/Overview";
+import Website from "@/components/icons/Website";
+import Pitch from "@/components/icons/Pitch";
 
 const items = [
   {
@@ -14,12 +16,12 @@ const items = [
   {
     title: "Website",
     url: "#",
-    icon: Inbox,
+    icon: Website,
   },
   {
     title: "Pitch",
     url: "#",
-    icon: Calendar,
+    icon: Pitch,
   },
 ]
 
