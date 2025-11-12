@@ -1,69 +1,103 @@
 "use client";
 
 import { Label, Pie, PieChart } from "recharts";
+import type { ChartConfig as BaseChartConfig } from "./ui/chart";
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "./ui/chart";
 import { TrendingUp } from "lucide-react";
 
+type ChartConfig = BaseChartConfig & {
+  [key: string]: {
+    label?: string;
+    categoria?: string;
+    faixa?: string;
+    color?: string;
+  };
+};
+
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
+  renda: {
+    label: "Renda",
   },
-  chrome: {
-    label: "Chrome",
-    color: "var(--chart-1)",
+  baixa: {
+    categoria: "Baixa",
+    faixa: "até R$ 1.980",
+    color: "#2B7FFF",
   },
-  safari: {
-    label: "Safari",
-    color: "var(--chart-2)",
+  baixa_media: {
+    categoria: "Baixa-Média",
+    faixa: "R$ 1.980 - R$ 3.960",
+    color: "#155DFC",
   },
-  firefox: {
-    label: "Firefox",
-    color: "var(--chart-3)",
+  media: {
+    categoria: "Média",
+    faixa: "R$ 3.960 - R$ 7.920",
+    color: "#1447E6",
   },
-  edge: {
-    label: "Edge",
-    color: "var(--chart-4)",
+  media_alta: {
+    categoria: "Média-Alta",
+    faixa: "R$ 7.920 - R$ 13.200",
+    color: "#193CB8",
   },
-  other: {
-    label: "Other",
-    color: "var(--chart-5)",
+  alta: {
+    categoria: "Alta",
+    faixa: "acima de R$ 13.200",
+    color: "#8EC5FF",
   },
 } satisfies ChartConfig;
 
+// Dados do gráfico
 const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
+  { faixa: "baixa", renda: 26.3, fill: "#2B7FFF" },
+  { faixa: "baixa_media", renda: 18.7, fill: "#155DFC" },
+  { faixa: "media", renda: 13.1, fill: "#1447E6" },
+  { faixa: "media_alta", renda: 21.0, fill: "#193CB8" },
+  { faixa: "alta", renda: 20.8, fill: "#8EC5FF" },
 ];
 
 const AppPieChart = () => {
+  const totalEstudantes = 945;
 
-  // If you don't use React compiler use useMemo hook to improve performance
-  const totalVisitors = chartData.reduce((acc, curr) => acc + curr.visitors, 0);
-  
   return (
-    <div className="">
-      <h1 className="text-lg font-medium mb-6">Browser Usage</h1>
-      <ChartContainer
-        config={chartConfig}
-        className="mx-auto aspect-square max-h-[250px]"
-      >
+    <div>
+      <h1 className="text-lg font-medium mb-6">
+        Renda dos Alunos com Nota ≥ 713 (Pública)
+      </h1>
+
+      <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
         <PieChart>
           <ChartTooltip
             cursor={false}
-            content={<ChartTooltipContent hideLabel />}
+            content={
+              <ChartTooltipContent
+                labelKey="renda"
+                nameKey="faixa"
+                indicator="line"
+                labelFormatter={(_, payload) => {
+                  if (!payload || payload.length === 0) return null;
+
+                  type ValidKey = Exclude<keyof typeof chartConfig, 'renda'>;
+                  const key = payload[0].payload.faixa as ValidKey;
+                  const categoria = chartConfig[key]?.categoria ?? "";
+                  const faixa = chartConfig[key]?.faixa ?? "";
+
+                  return (
+                    <div>
+                      <div className="font-medium text-sm">{categoria}</div>
+                      <div className="text-xs text-muted-foreground">{faixa}</div>
+                    </div>
+                  );
+                }}
+              />
+            }
           />
           <Pie
             data={chartData}
-            dataKey="visitors"
-            nameKey="browser"
+            dataKey="renda"
+            nameKey="faixa"
             innerRadius={60}
             strokeWidth={5}
           >
@@ -82,14 +116,14 @@ const AppPieChart = () => {
                         y={viewBox.cy}
                         className="fill-foreground text-3xl font-bold"
                       >
-                        {totalVisitors.toLocaleString()}
+                        {totalEstudantes.toLocaleString()}
                       </tspan>
                       <tspan
                         x={viewBox.cx}
                         y={(viewBox.cy || 0) + 24}
                         className="fill-muted-foreground"
                       >
-                        Visitors
+                        Estudantes
                       </tspan>
                     </text>
                   );
@@ -99,14 +133,6 @@ const AppPieChart = () => {
           </Pie>
         </PieChart>
       </ChartContainer>
-      <div className="mt-4 flex flex-col gap-2 items-center">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4 text-green-500" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </div>
     </div>
   );
 };

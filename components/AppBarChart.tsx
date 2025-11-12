@@ -4,38 +4,47 @@ import { ChartContainer, ChartLegend, ChartTooltip, ChartTooltipContent, ChartLe
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis } from "recharts"
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  publica: {
+    label: "Pública",
     color: "#2563eb",
   },
-  mobile: {
-    label: "Mobile",
+  privada: {
+    label: "Privada",
     color: "#60a5fa",
   },
 } satisfies ChartConfig
 
 const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
+  { subject: "Ciências da Natureza", publica: 469, privada: 538 },
+  { subject: "Ciências Humanas", publica: 498, privada: 574 },
+  { subject: "Linguagens e Códigos", publica: 501, privada: 560 },
+  { subject: "Matemática", publica: 498, privada: 618 },
+  { subject: "Redação", publica: 600, privada: 780 },
+  { subject: "Média Geral", publica: 511, privada: 605 },
 ]
+
+const subjectAbbr: Record<string, string> = {
+  "Ciências da Natureza": "Natureza",
+  "Ciências Humanas": "Humanas",
+  "Linguagens e Códigos": "Linguagens",
+  "Matemática": "Matématica",
+  "Redação": "Redação",
+  "Média Geral": "Média",
+}
 
     const AppBarChart = () => {
     return (
         <div className="">
-            <h1 className="text-lg font-medium mb-6">Privada x Pública</h1>
+            <h1 className="text-lg font-medium mb-6">Desempenho: Escolas Públicas x Privadas - ENEM PE</h1>
             <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
                 <BarChart accessibilityLayer data={chartData}>
                     <CartesianGrid vertical={false} />
                     <XAxis
-                        dataKey="month"
+                        dataKey="subject"
                         tickLine={true}
                         tickMargin={10}
                         axisLine={false}
-                        tickFormatter={(value) => value.slice(0, 3)}
+                        tickFormatter={(value: string) => subjectAbbr[value] ?? value}
                     />
                     <YAxis
                         tickLine={true}
@@ -44,8 +53,8 @@ const chartData = [
                     />
                     <ChartTooltip content={<ChartTooltipContent />} />
                     <ChartLegend content={<ChartLegendContent />} />
-                    <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-                    <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+                    <Bar dataKey="publica" fill="var(--color-publica)" radius={4} />
+                    <Bar dataKey="privada" fill="var(--color-privada)" radius={4} />
                 </BarChart>
             </ChartContainer> 
         </div>
