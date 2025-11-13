@@ -62,13 +62,34 @@ export default function AppBarChartActive() {
             width={80}
           />
 
-          <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+          <ChartTooltip
+            cursor={false}
+            content={
+              <ChartTooltipContent
+                hideLabel
+                formatter={(value, name, item) => (
+                  <div className="flex min-w-[130px] items-center text-xs text-muted-foreground">
+                    <div
+                      className="h-2.5 w-2.5 shrink-0 rounded-[2px] mr-2"
+                      style={{
+                        backgroundColor: barColors[item.payload.ano - 2020]
+                      }}
+                    />
+                    {chartConfig.participantes.label}
+                    <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
+                      {new Intl.NumberFormat('pt-BR').format(value as number)}
+                    </div>
+                  </div>
+                )}
+              />
+            }
+          />
           <ChartLegend content={<ChartLegendContent />} />
 
           <Bar
             dataKey="participantes"
             radius={8}
-            activeIndex={chartData.length - 1} // última barra como ativa
+            activeIndex={chartData.length - 1} 
             activeBar={({ ...props }) => (
               <Rectangle
                 {...props}
