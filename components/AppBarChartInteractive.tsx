@@ -41,7 +41,7 @@ const chartData = [
 
 const chartConfig = {
   percentual: {
-    label: "Porcentagem de Participantes",
+    label: "Porcentagem",
     color: "#2563eb",
   },
 } satisfies ChartConfig
@@ -53,14 +53,14 @@ export default function AppBarChartInteractive() {
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 pt-4 pb-3">
           <CardTitle>Distribuição de Participantes por Faixa de Renda</CardTitle>
           <CardDescription>
-            Percentual de participantes do ENEM por faixa de renda familiar declarada em Pernambuco (Q006).
+            Percentual de participantes do ENEM por faixa de renda familiar em PE
           </CardDescription>
         </div>
       </CardHeader>
       <CardContent className="px-2 sm:p-6">
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[320px] w-full"
+          className="min-h-[200px] w-full"
         >
           <BarChart
             accessibilityLayer
