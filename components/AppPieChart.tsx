@@ -6,6 +6,8 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
 } from "./ui/chart";
 import { TrendingUp } from "lucide-react";
 
@@ -28,7 +30,7 @@ const chartConfig = {
     color: "#2B7FFF",
   },
   baixa_media: {
-    categoria: "Baixa-Média",
+    categoria: "Baixa Média",
     faixa: "R$ 1.980 - R$ 3.960",
     color: "#155DFC",
   },
@@ -38,7 +40,7 @@ const chartConfig = {
     color: "#1447E6",
   },
   media_alta: {
-    categoria: "Média-Alta",
+    categoria: "Média Alta",
     faixa: "R$ 7.920 - R$ 13.200",
     color: "#193CB8",
   },
@@ -49,7 +51,6 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-// Dados do gráfico
 const chartData = [
   { faixa: "baixa", renda: 26.3, fill: "#2B7FFF" },
   { faixa: "baixa_media", renda: 18.7, fill: "#155DFC" },
@@ -94,6 +95,7 @@ const AppPieChart = () => {
               />
             }
           />
+          <ChartLegend content={<ChartLegendContent />} />
           <Pie
             data={chartData}
             dataKey="renda"

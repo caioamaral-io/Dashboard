@@ -55,6 +55,14 @@ const AppBarChartInteractive = () => {
               margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
             >
               <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="faixa_renda"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                interval={0}
+                tickFormatter={(_, index) => String.fromCharCode(65 + index)}
+              />
               <YAxis
                 tickLine={false}
                 axisLine={false}
