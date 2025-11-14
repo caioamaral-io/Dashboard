@@ -6,23 +6,23 @@ import { AreaChart, Area, CartesianGrid, XAxis, YAxis, ResponsiveContainer } fro
 const chartConfig = {
   natureza: {
     label: "Natureza",
-    color: "#2563EB", // azul
+    color: "#8EC5FF", 
   },
   humanas: {
     label: "Humanas",
-    color: "#F97316", // laranja
+    color: "#5DA7FF", 
   },
   linguagens: {
     label: "Códigos",
-    color: "#22C55E", // verde
+    color: "#2B7FFF", 
   },
   matematica: {
     label: "Matemática",
-    color: "#A855F7", // roxo
+    color: "#155DFC", 
   },
   redacao: {
     label: "Redação",
-    color: "#EF4444", // vermelho
+    color: "#1447E6", 
   },
 } satisfies ChartConfig
 
