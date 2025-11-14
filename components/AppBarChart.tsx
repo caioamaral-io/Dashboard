@@ -47,7 +47,7 @@ const subjectAbbr: Record<string, string> = {
                         tickFormatter={(value: string) => subjectAbbr[value] ?? value}
                     />
                     <YAxis
-                        tickLine={true}
+                        tickLine={false}
                         tickMargin={10}
                         axisLine={false} 
                     />

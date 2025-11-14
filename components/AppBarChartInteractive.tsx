@@ -1,15 +1,7 @@
 "use client"
 
-import * as React from "react"
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from "recharts"
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 import {
   ChartConfig,
   ChartContainer,
@@ -46,59 +38,50 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export default function AppBarChartInteractive() {
+const AppBarChartInteractive = () => {
   return (
-    <Card className="py-0 border-0 shadow-none bg-transparent rounded-none">
-      <CardHeader className="flex flex-col items-stretch !p-0">
-        <div className="flex flex-1 flex-col justify-center gap-1 px-6 pt-4 pb-3">
-          <CardTitle>Distribuição de Participantes por Faixa de Renda</CardTitle>
-          <CardDescription>
-            Percentual de participantes do ENEM por faixa de renda familiar em PE
-          </CardDescription>
-        </div>
-      </CardHeader>
-      <CardContent className="px-2 sm:p-6">
-        <ChartContainer
-          config={chartConfig}
-          className="min-h-[200px] w-full"
-        >
-          <BarChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              left: 12,
-              right: 12,
-              bottom: 40,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => `${value}%`}
-            />
-            <ChartTooltip
-              content={
-                <ChartTooltipContent
-                  nameKey="percentual"
-                  labelFormatter={(_, payload) => {
-                    if (!payload || payload.length === 0) return null
+    <div className="">
+      <h1 className="text-lg font-medium mb-6">
+        Distribuição de Participantes por Faixa de Renda
+      </h1>
+      <div className="w-full h-[350px]">
+        <ChartContainer config={chartConfig} className="w-full h-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              accessibilityLayer
+              data={chartData}
+              margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
+            >
+              <CartesianGrid vertical={false} />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tickMargin={10}
+              />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    nameKey="percentual"
+                    labelFormatter={(_, payload) => {
+                      if (!payload || payload.length === 0) return null
 
-                    const item = payload[0]
-                    return String(item?.payload?.faixa_renda ?? "")
-                  }}
-                />
-              }
-            />
-            <Bar
-              dataKey="percentual"
-              fill="var(--color-percentual)"
-              radius={[4, 4, 0, 0]}
-            />
-          </BarChart>
+                      const item = payload[0]
+                      return String(item?.payload?.faixa_renda ?? "")
+                    }}
+                  />
+                }
+              />
+              <Bar
+                dataKey="percentual"
+                fill="var(--color-percentual)"
+                radius={[4, 4, 0, 0]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
         </ChartContainer>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
+
+export default AppBarChartInteractive
