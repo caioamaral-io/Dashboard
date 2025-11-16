@@ -1,28 +1,55 @@
 "use client"
 
-import { ChartContainer, ChartLegend, ChartTooltip, ChartTooltipContent, ChartLegendContent, type ChartConfig } from "@/components/ui/chart"
-import { AreaChart, Area, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from "recharts"
+import * as React from "react"
+import { TrendingDown } from "lucide-react"
+import { Bar, BarChart, XAxis, YAxis } from "recharts"
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Badge } from "@/components/ui/badge"
+
+export const description = "Notas médias ENEM por disciplina e faixa de renda"
 
 const chartConfig = {
   natureza: {
     label: "Natureza",
-    color: "#8EC5FF", 
+    color: "#8EC5FF",
   },
   humanas: {
     label: "Humanas",
-    color: "#5DA7FF", 
+    color: "#5DA7FF",
   },
   linguagens: {
     label: "Códigos",
-    color: "#2B7FFF", 
+    color: "#2B7FFF",
   },
   matematica: {
     label: "Matemática",
-    color: "#155DFC", 
+    color: "#155DFC",
   },
   redacao: {
     label: "Redação",
-    color: "#1447E6", 
+    color: "#1447E6",
   },
 } satisfies ChartConfig
 
@@ -70,137 +97,193 @@ const chartData = faixas.map((faixa, index) => ({
   ][index],
 }))
 
-function CustomLegendArea2() {
-  const keys: (keyof typeof chartConfig)[] = [
-    "natureza",
-    "humanas",
-    "linguagens",
-    "matematica",
-    "redacao",
-  ]
+type ActiveProperty = keyof typeof chartConfig | "all"
 
-  const firstRow = keys.slice(0, 3)
-  const secondRow = keys.slice(3)
-
-  const renderRow = (row: (keyof typeof chartConfig)[]) => (
-    <div className="flex justify-center gap-6">
-      {row.map((key) => (
-        <div key={key} className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span
-            className="h-2.5 w-2.5 rounded-[2px]"
-            style={{ backgroundColor: chartConfig[key].color as string }}
-          />
-          <span>{chartConfig[key].label}</span>
-        </div>
-      ))}
-    </div>
-  )
+const AppAreaChart2 = () => {
+  const [activeProperty, setActiveProperty] =
+    React.useState<ActiveProperty>("all")
 
   return (
-    <div className="mt-3 flex flex-col items-center gap-2">
-      {renderRow(firstRow)}
-      {renderRow(secondRow)}
-    </div>
+    <Card>
+      <CardHeader>
+        <div className="flex flex-row justify-between">
+          <CardTitle>
+            Média Notas por Prova x Renda Familiar
+            <Badge
+              variant="outline"
+              className="text-emerald-500 bg-emerald-500/10 border-none ml-2 inline-flex items-center gap-1 text-[11px] px-2 py-0.5"
+            >
+              <TrendingDown className="h-3 w-3" />
+              <span>-5,2%</span>
+            </Badge>
+          </CardTitle>
+          <Select
+            value={activeProperty}
+            onValueChange={(value: ActiveProperty) => {
+              setActiveProperty(value)
+            }}
+          >
+            <SelectTrigger className="text-xs !h-6 !px-1.5">
+              <SelectValue placeholder="Selecionar disciplina" />
+            </SelectTrigger>
+            <SelectContent align="end">
+              <SelectGroup>
+                <SelectLabel>Disciplinas</SelectLabel>
+                <SelectItem className="text-xs" value="all">
+                  Todas
+                </SelectItem>
+                <SelectItem className="text-xs" value="natureza">
+                  Natureza
+                </SelectItem>
+                <SelectItem className="text-xs" value="humanas">
+                  Humanas
+                </SelectItem>
+                <SelectItem className="text-xs" value="linguagens">
+                  Códigos
+                </SelectItem>
+                <SelectItem className="text-xs" value="matematica">
+                  Matemática
+                </SelectItem>
+                <SelectItem className="text-xs" value="redacao">
+                  Redação
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <CardDescription>
+          Notas médias por faixa de renda e disciplina do ENEM.
+        </CardDescription>
+      </CardHeader>
+
+      <CardContent>
+        <ChartContainer config={chartConfig}>
+          <BarChart
+            accessibilityLayer
+            data={chartData}
+
+            layout="vertical"
+
+            margin={{
+              left: -15,
+            }}
+          >
+            <YAxis
+              type="category"
+              dataKey="faixa"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tickFormatter={(value: string) => value}
+            />
+            <XAxis
+              type="number"
+
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              hide
+            />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
+            <Bar
+              stackId="a"
+              barSize={8}
+              className="dark:text-[#1A1A1C] text-[#E4E4E7]"
+              dataKey="natureza"
+              fill="var(--color-natureza)"
+              radius={4}
+              shape={<CustomGradientBar activeProperty={activeProperty} />}
+              background={{ fill: "currentColor", radius: 4 }}
+              overflow="visible"
+            />
+            <Bar
+              stackId="a"
+              barSize={8}
+              shape={<CustomGradientBar activeProperty={activeProperty} />}
+              dataKey="humanas"
+              fill="var(--color-humanas)"
+              radius={4}
+              overflow="visible"
+            />
+            <Bar
+              stackId="a"
+              barSize={8}
+              shape={<CustomGradientBar activeProperty={activeProperty} />}
+              dataKey="linguagens"
+              fill="var(--color-linguagens)"
+              radius={4}
+              overflow="visible"
+            />
+            <Bar
+              stackId="a"
+              barSize={8}
+              shape={<CustomGradientBar activeProperty={activeProperty} />}
+              dataKey="matematica"
+              fill="var(--color-matematica)"
+              radius={4}
+              overflow="visible"
+            />
+            <Bar
+              stackId="a"
+              barSize={8}
+              shape={<CustomGradientBar activeProperty={activeProperty} />}
+              dataKey="redacao"
+              fill="var(--color-redacao)"
+              radius={4}
+              overflow="visible"
+            />
+
+          </BarChart>
+        </ChartContainer>
+      </CardContent>
+    </Card>
   )
 }
 
-const AppAreaChart2 = () => {
-  return (
-    <div className="">
-      <h1 className="text-lg font-medium mb-1">Média Notas por Prova x Renda Familiar</h1>
-      <p className="text-sm text-muted-foreground mb-4">
-        Nota média das disciplinas do ENEM por faixa de renda.
-      </p>
-      <div className="w-full h-[350px]">
-        <ChartContainer config={chartConfig} className="w-full h-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart
-              accessibilityLayer
-              data={chartData}
-              margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
-            >
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="faixa"
-                tickLine={false}
-                tickMargin={10}
-                axisLine={false}
-              />
-              <YAxis
-                tickLine={false}
-                tickMargin={10}
-                axisLine={false}
-              />
-              <ChartTooltip content={<ChartTooltipContent />} />
-              <ChartLegend content={<CustomLegendArea2 />} />
+const CustomGradientBar = (
+  props: React.SVGProps<SVGRectElement> & {
+    dataKey?: string
+    activeProperty?: ActiveProperty | null
+    glowOpacity?: number
+  },
+) => {
+  const { fill, x, y, width, height, dataKey, activeProperty, radius } = props
 
-              <defs>
-                <linearGradient id="fillNatureza" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="var(--color-natureza)" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="var(--color-natureza)" stopOpacity={0.1} />
-                </linearGradient>
-                <linearGradient id="fillHumanas" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="var(--color-humanas)" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="var(--color-humanas)" stopOpacity={0.1} />
-                </linearGradient>
-                <linearGradient id="fillLinguagens" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="var(--color-linguagens)" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="var(--color-linguagens)" stopOpacity={0.1} />
-                </linearGradient>
-                <linearGradient id="fillMatematica" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="var(--color-matematica)" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="var(--color-matematica)" stopOpacity={0.1} />
-                </linearGradient>
-                <linearGradient id="fillRedacao" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="var(--color-redacao)" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="var(--color-redacao)" stopOpacity={0.1} />
-                </linearGradient>
-              </defs>
-              <Area
-                dataKey="natureza"
-                type="natural"
-                fill="url(#fillNatureza)"
-                fillOpacity={0.4}
-                stroke="var(--color-natureza)"
-                stackId="a"
-              />
-              <Area
-                dataKey="humanas"
-                type="natural"
-                fill="url(#fillHumanas)"
-                fillOpacity={0.4}
-                stroke="var(--color-humanas)"
-                stackId="a"
-              />
-              <Area
-                dataKey="linguagens"
-                type="natural"
-                fill="url(#fillLinguagens)"
-                fillOpacity={0.4}
-                stroke="var(--color-linguagens)"
-                stackId="a"
-              />
-              <Area
-                dataKey="matematica"
-                type="natural"
-                fill="url(#fillMatematica)"
-                fillOpacity={0.4}
-                stroke="var(--color-matematica)"
-                stackId="a"
-              />
-              <Area
-                dataKey="redacao"
-                type="natural"
-                fill="url(#fillRedacao)"
-                fillOpacity={0.4}
-                stroke="var(--color-redacao)"
-                stackId="a"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </ChartContainer>
-      </div>
-    </div>
+  const isActive = activeProperty === "all" ? true : activeProperty === dataKey
+
+  return (
+    <>
+      <rect
+        x={x}
+        y={y}
+        rx={radius}
+        width={width}
+        height={height}
+        stroke="none"
+        fill={fill}
+        opacity={isActive ? 1 : 0.1}
+        filter={
+          isActive && activeProperty !== "all"
+            ? `url(#glow-chart-${dataKey})`
+            : undefined
+        }
+      />
+      <defs>
+        <filter
+          id={`glow-chart-${dataKey}`}
+          x="-200%"
+          y="-200%"
+          width="600%"
+          height="600%"
+        >
+          <feGaussianBlur stdDeviation="10" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+    </>
   )
 }
 
