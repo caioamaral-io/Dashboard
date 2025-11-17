@@ -38,7 +38,7 @@ export default function RootLayout({
         >
           <main className='w-full'>
             <Navbar />
-            <div className="px-4 mt-4">{children}</div>
+            <div className="px-4 mt-4 mb-4">{children}</div>
           </main>
         </ThemeProvider>
       </body>
