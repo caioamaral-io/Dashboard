@@ -83,6 +83,16 @@ const AppPieChart = () => {
           className="h-[260px] w-full flex items-center justify-center"
         >
           <PieChart>
+            <rect
+              x="0"
+              y="0"
+              width="100%"
+              height="100%"
+              fill="url(#enem-pie-pattern-dots)"
+            />
+            <defs>
+              <DottedBackgroundPatternPie />
+            </defs>
             <ChartTooltip
               cursor={false}
               content={
@@ -157,6 +167,27 @@ const AppPieChart = () => {
         </div>
       </CardFooter>
     </Card>
+  );
+};
+
+const DottedBackgroundPatternPie = () => {
+  return (
+    <pattern
+      id="enem-pie-pattern-dots"
+      x="0"
+      y="0"
+      width="10"
+      height="10"
+      patternUnits="userSpaceOnUse"
+    >
+      <circle
+        className="text-muted dark:text-muted/40"
+        cx="2"
+        cy="2"
+        r="1"
+        fill="currentColor"
+      />
+    </pattern>
   );
 };
 
