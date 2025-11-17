@@ -298,24 +298,7 @@ const CustomGradientBar = (
         stroke="none"
         fill={fill}
         opacity={isActive ? 1 : 0.1}
-        filter={
-          isActive && activeProperty !== "all"
-            ? `url(#glow-chart-${dataKey})`
-            : undefined
-        }
       />
-      <defs>
-        <filter
-          id={`glow-chart-${dataKey}`}
-          x="-200%"
-          y="-200%"
-          width="600%"
-          height="600%"
-        >
-          <feGaussianBlur stdDeviation="10" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
-      </defs>
     </>
   )
 }

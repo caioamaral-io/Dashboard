@@ -32,11 +32,11 @@ const chartData = [
 const chartConfig = {
   Publica: {
     label: "Pública",
-    color: "var(--chart-1)",
+    color: "#8EC5FF",
   },
   Privada: {
     label: "Privada",
-    color: "var(--chart-2)",
+    color: "#2B7FFF",
   },
 } satisfies ChartConfig;
 

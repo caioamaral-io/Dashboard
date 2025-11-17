@@ -25,6 +25,13 @@ const chartData = [
 	{ ano: 2023, participantes: 34652 },
 ]
 
+const barColors: Record<number, string> = {
+	2020: "#8EC5FF",
+	2021: "#2B7FFF",
+	2022: "#1447E6",
+	2023: "#193CB8",
+}
+
 const chartConfig = {
 	participantes: {
 		label: "Participantes",
@@ -90,9 +97,12 @@ const AppBarChartActive = () => {
 											<div
 												className="h-2.5 w-2.5 shrink-0 rounded-[2px] mr-2"
 												style={{
-													backgroundColor: chartConfig.participantes.color,
+													backgroundColor:
+														barColors[(item?.payload as any)?.ano as number] ??
+														chartConfig.participantes.color,
 												}}
 											/>
+
 											{chartConfig.participantes.label}
 											<div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
 												{new Intl.NumberFormat('pt-BR').format(value as number)}
@@ -108,13 +118,14 @@ const AppBarChartActive = () => {
 							radius={4}
 							activeIndex={chartData.length - 1}
 						>
-							{chartData.map((_, index) => (
+							{chartData.map((entry, index) => (
 								<Cell
 									key={`cell-participantes-${index}`}
+									fill={barColors[entry.ano]}
 									fillOpacity={
 										activeIndex === null ? 1 : activeIndex === index ? 1 : 0.3
 									}
-									stroke={activeIndex === index ? "var(--color-participantes)" : ""}
+									stroke={activeIndex === index ? barColors[entry.ano] : ""}
 									onMouseEnter={() => setActiveIndex(index)}
 									className="duration-200"
 								/>
