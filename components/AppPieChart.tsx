@@ -1,6 +1,5 @@
 "use client";
 
-
 import { Label, Pie, PieChart } from "recharts";
 import type { ChartConfig as BaseChartConfig } from "./ui/chart";
 import {
@@ -11,6 +10,7 @@ import {
  ChartLegendContent,
 } from "./ui/chart";
 import { TrendingUp } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "./ui/card";
 
 
 type ChartConfig = BaseChartConfig & {
@@ -59,8 +59,6 @@ const chartConfig = {
  },
 } satisfies ChartConfig;
 
-
-// Dados do gráfico
 const chartData = [
  { faixa: "baixa", renda: 26.3, fill: "#2B7FFF" },
  { faixa: "baixa_media", renda: 18.7, fill: "#155DFC" },
@@ -69,101 +67,99 @@ const chartData = [
  { faixa: "alta", renda: 20.8, fill: "#8EC5FF" },
 ];
 
-
 const AppPieChart = () => {
- const totalEstudantes = 945;
+  const totalEstudantes = 945;
 
+  return (
+    <Card className="h-full flex flex-col">
+      <CardHeader>
+        <CardTitle className="text-lg font-medium">
+          Renda dos Alunos com Nota ≥ 713 (Pública)
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="flex-1 flex items-center justify-center">
+        <ChartContainer
+          config={chartConfig}
+          className="h-[260px] w-full flex items-center justify-center"
+        >
+          <PieChart>
+            <ChartTooltip
+              cursor={false}
+              content={
+                <ChartTooltipContent
+                  labelKey="renda"
+                  nameKey="faixa"
+                  indicator="line"
+                  labelFormatter={(_, payload) => {
+                    if (!payload || payload.length === 0) return null;
 
- return (
-   <div className="flex flex-col items-center">
-     <h1 className="text-lg font-medium mb-6 text-center">
-       Renda dos Alunos com Nota ≥ 713 (Pública)
-     </h1>
+                    type ValidKey = Exclude<keyof typeof chartConfig, "renda">;
+                    const key = payload[0].payload.faixa as ValidKey;
+                    const categoria = chartConfig[key]?.categoria ?? "";
+                    const faixa = chartConfig[key]?.faixa ?? "";
 
-
-     <ChartContainer
-       config={chartConfig}
-       className="aspect-square max-h-[250px] w-full flex items-center justify-center"
-     >
-       <PieChart>
-         <ChartTooltip
-           cursor={false}
-           content={
-             <ChartTooltipContent
-               labelKey="renda"
-               nameKey="faixa"
-               indicator="line"
-               labelFormatter={(_, payload) => {
-                 if (!payload || payload.length === 0) return null;
-
-
-                 type ValidKey = Exclude<keyof typeof chartConfig, 'renda'>;
-                 const key = payload[0].payload.faixa as ValidKey;
-                 const categoria = chartConfig[key]?.categoria ?? "";
-                 const faixa = chartConfig[key]?.faixa ?? "";
-
-
-                 return (
-                   <div>
-                     <div className="font-medium text-sm">{categoria}</div>
-                     <div className="text-xs text-muted-foreground">{faixa}</div>
-                   </div>
-                 );
-               }}
-             />
-           }
-         />
-         <Pie
-           data={chartData}
-           dataKey="renda"
-           nameKey="faixa"
-           innerRadius={60}
-           strokeWidth={5}
-         >
-           <Label
-             content={({ viewBox }) => {
-               if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                 return (
-                   <text
-                     x={viewBox.cx}
-                     y={viewBox.cy}
-                     textAnchor="middle"
-                     dominantBaseline="middle"
-                   >
-                     <tspan
-                       x={viewBox.cx}
-                       y={viewBox.cy}
-                       className="fill-foreground text-3xl font-bold"
-                     >
-                       {totalEstudantes.toLocaleString()}
-                     </tspan>
-                     <tspan
-                       x={viewBox.cx}
-                       y={(viewBox.cy || 0) + 24}
-                       className="fill-muted-foreground"
-                     >
-                       Estudantes
-                     </tspan>
-                   </text>
-                 );
-               }
-             }}
-           />
-         </Pie>
-
-
-         <ChartLegend
-           verticalAlign="bottom"
-           content={<ChartLegendContent nameKey="faixa" />}
-         />
-       </PieChart>
-     </ChartContainer>
-   </div>
- );
+                    return (
+                      <div>
+                        <div className="font-medium text-sm">{categoria}</div>
+                        <div className="text-xs text-muted-foreground">{faixa}</div>
+                      </div>
+                    );
+                  }}
+                />
+              }
+            />
+            <Pie
+              data={chartData}
+              dataKey="renda"
+              nameKey="faixa"
+              innerRadius={60}
+              strokeWidth={5}
+            >
+              <Label
+                content={({ viewBox }) => {
+                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                    return (
+                      <text
+                        x={viewBox.cx}
+                        y={viewBox.cy}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                      >
+                        <tspan
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          className="fill-foreground text-3xl font-bold"
+                        >
+                          {totalEstudantes.toLocaleString()}
+                        </tspan>
+                        <tspan
+                          x={viewBox.cx}
+                          y={(viewBox.cy || 0) + 24}
+                          className="fill-muted-foreground"
+                        >
+                          Estudantes
+                        </tspan>
+                      </text>
+                    );
+                  }
+                }}
+              />
+            </Pie>
+          </PieChart>
+        </ChartContainer>
+      </CardContent>
+      <CardFooter className="flex-col gap-2 text-base">
+        <div className="flex items-center gap-2 leading-none font-medium text-center">
+          Crescimento de 5,2% na participação
+        </div>
+        <div className="text-muted-foreground leading-none text-center">
+          Distribuição da renda dos 945 estudantes com nota ≥ 713 
+        </div>
+      </CardFooter>
+    </Card>
+  );
 };
 
-
 export default AppPieChart;
-
 
 
