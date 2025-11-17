@@ -61,6 +61,7 @@ const AppAreaChart = () => {
           <AreaChart
             accessibilityLayer
             data={chartData}
+            margin={{ left: 24, right: 24 }}
             onMouseMove={(e) => setXAxis(e.chartX as number)}
             onMouseLeave={() => setXAxis(null)}
           >
