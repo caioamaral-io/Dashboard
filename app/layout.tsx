@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import AppSidebar from "../components/AppSidebar";
 import Navbar from "../components/Navbar";   
 import { ThemeProvider } from "../components/theme-provider";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { cookies } from "next/headers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,14 +19,11 @@ export const metadata: Metadata = {
   description: "Dashboard de análise de desempenho do ENEM em PE",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-  const cookieStore = await cookies()
-  const defaultOPen = cookieStore.get("sidebar_state")?.value === "true"
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -42,13 +36,10 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SidebarProvider defaultOpen={defaultOPen}>
-            <AppSidebar />
-            <main className='w-full'>
-              <Navbar />
-              <div className="px-4">{children}</div>
-            </main>
-          </SidebarProvider>
+          <main className='w-full'>
+            <Navbar />
+            <div className="px-4">{children}</div>
+          </main>
         </ThemeProvider>
       </body>
     </html>
