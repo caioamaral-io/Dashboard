@@ -1,6 +1,7 @@
 "use client";
 
-import { Label, Pie, PieChart } from "recharts";
+import * as React from "react";
+import { Cell, Label, Pie, PieChart } from "recharts";
 import type { ChartConfig as BaseChartConfig } from "./ui/chart";
 import {
  ChartContainer,
@@ -59,6 +60,8 @@ const chartConfig = {
  },
 } satisfies ChartConfig;
 
+type RendaKey = keyof typeof chartConfig;
+
 const chartData = [
  { faixa: "baixa", renda: 26.3, fill: "#2B7FFF" },
  { faixa: "baixa_media", renda: 18.7, fill: "#155DFC" },
@@ -69,6 +72,23 @@ const chartData = [
 
 const AppPieChart = () => {
   const totalEstudantes = 945;
+  const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
+
+  const activeSlice = React.useMemo(() => {
+    if (activeIndex === null) return null;
+    return chartData[activeIndex];
+  }, [activeIndex]);
+
+  const defaultKey: RendaKey = "baixa";
+  const activeKey = (activeSlice?.faixa as RendaKey) ?? defaultKey;
+  const currentConfig = chartConfig[activeKey] as {
+    categoria?: string;
+    faixa?: string;
+  };
+  const currentCategoria = currentConfig.categoria ?? "";
+  const currentFaixa = currentConfig.faixa ?? "";
+  const currentPercent =
+    activeSlice?.renda ?? chartData.find((d) => d.faixa === activeKey)?.renda ?? 0;
 
   return (
     <Card className="h-full flex flex-col">
@@ -76,6 +96,9 @@ const AppPieChart = () => {
         <CardTitle className="text-lg font-medium">
           Renda dos Alunos com Nota ≥ 713 (Pública)
         </CardTitle>
+        <p className="text-sm text-muted-foreground mt-1">
+          Faixa: {currentCategoria} - ({currentPercent.toFixed(1)}%)
+        </p>
       </CardHeader>
       <CardContent className="flex-1 flex items-center justify-center">
         <ChartContainer
@@ -100,18 +123,32 @@ const AppPieChart = () => {
                   labelKey="renda"
                   nameKey="faixa"
                   indicator="line"
-                  labelFormatter={(_, payload) => {
-                    if (!payload || payload.length === 0) return null;
+                  hideLabel
+                  hideIndicator
+                  formatter={(_, __, item) => {
+                    if (!item || !("payload" in (item as any))) return null;
+
+                    const payloadAny = (item as any).payload as {
+                      faixa: string;
+                      fill?: string;
+                    };
 
                     type ValidKey = Exclude<keyof typeof chartConfig, "renda">;
-                    const key = payload[0].payload.faixa as ValidKey;
+                    const key = payloadAny.faixa as ValidKey;
                     const categoria = chartConfig[key]?.categoria ?? "";
                     const faixa = chartConfig[key]?.faixa ?? "";
+                    const color = payloadAny.fill || (item as any).color;
 
                     return (
-                      <div>
-                        <div className="font-medium text-sm">{categoria}</div>
-                        <div className="text-xs text-muted-foreground">{faixa}</div>
+                      <div className="flex items-start gap-2">
+                        <div
+                          className="w-1 h-8 rounded-full"
+                          style={{ backgroundColor: color }}
+                        />
+                        <div>
+                          <div className="font-medium text-sm">{categoria}</div>
+                          <div className="text-xs text-muted-foreground">{faixa}</div>
+                        </div>
                       </div>
                     );
                   }}
@@ -124,7 +161,15 @@ const AppPieChart = () => {
               nameKey="faixa"
               innerRadius={60}
               strokeWidth={5}
+              onMouseLeave={() => setActiveIndex(null)}
             >
+              {chartData.map((entry, index) => (
+                <Cell
+                  key={entry.faixa}
+                  fill={entry.fill}
+                  onMouseEnter={() => setActiveIndex(index)}
+                />
+              ))}
               <Label
                 content={({ viewBox }) => {
                   if (viewBox && "cx" in viewBox && "cy" in viewBox) {
@@ -160,10 +205,10 @@ const AppPieChart = () => {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-base">
         <div className="flex items-center gap-2 leading-none font-medium text-center">
-          Crescimento de 5,2% na participação
+          Superação socioeconômica
         </div>
         <div className="text-muted-foreground leading-none text-center">
-          Distribuição da renda dos 945 estudantes com nota ≥ 713 
+          Alunos de baixa renda lideram em desempenho elevado 
         </div>
       </CardFooter>
     </Card>
