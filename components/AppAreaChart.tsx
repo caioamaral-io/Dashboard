@@ -140,20 +140,20 @@ const AppAreaChart = () => {
               )}
             </defs>
             <Area
-              dataKey="Publica"
-              type="natural"
-              fill={"url(#animated-highlighted-grad-Publica)"}
-              fillOpacity={0.4}
-              stroke="var(--color-Publica)"
-              strokeWidth={0.8}
-              mask="url(#animated-highlighted-mask)"
-            />
-            <Area
               dataKey="Privada"
               type="natural"
               fill={"url(#animated-highlighted-grad-Privada)"}
               fillOpacity={0.4}
               stroke="var(--color-Privada)"
+              strokeWidth={0.8}
+              mask="url(#animated-highlighted-mask)"
+            />
+            <Area
+              dataKey="Publica"
+              type="natural"
+              fill={"url(#animated-highlighted-grad-Publica)"}
+              fillOpacity={0.4}
+              stroke="var(--color-Publica)"
               strokeWidth={0.8}
               mask="url(#animated-highlighted-mask)"
             />
