@@ -32,39 +32,36 @@ const Navbar = () => {
 	return (
 		<header className="border-b px-4 md:px-6">
 			<div className="flex h-14 items-center justify-between gap-4">
+				<div />
 				<div className="flex items-center gap-4">
-					<div className="flex">
-						<NavigationMenu>
-							<NavigationMenuList className="gap-2">
-								<TooltipProvider>
-									{navigationLinks.map((link) => (
-										<NavigationMenuItem key={link.label}>
-											<Tooltip>
-												<TooltipTrigger asChild>
-													<NavigationMenuLink
-														href={link.href}
-														className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:text-foreground"
-													>
-														<link.icon size={18} aria-hidden="true" />
-														<span className="sr-only">{link.label}</span>
-													</NavigationMenuLink>
-												</TooltipTrigger>
-												<TooltipContent
-													side="bottom"
-													className="px-3 py-1 text-xs rounded-md border border-border bg-background text-foreground shadow-sm"
+					<NavigationMenu>
+						<NavigationMenuList className="gap-2">
+							<TooltipProvider>
+								{navigationLinks.map((link) => (
+									<NavigationMenuItem key={link.label}>
+										<Tooltip>
+											<TooltipTrigger asChild>
+												<NavigationMenuLink
+													href={link.href}
+													className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:text-foreground"
 												>
-													<p className="leading-none">{link.label}</p>
-												</TooltipContent>
-											</Tooltip>
-										</NavigationMenuItem>
-									))}
-								</TooltipProvider>
-							</NavigationMenuList>
-						</NavigationMenu>
-					</div>
-				</div>
+													<link.icon size={18} aria-hidden="true" />
+													<span className="sr-only">{link.label}</span>
+												</NavigationMenuLink>
+											</TooltipTrigger>
+											<TooltipContent
+												side="bottom"
+												className="px-3 py-1 text-xs rounded-md border border-border bg-background text-foreground shadow-sm"
+											>
+												<p className="leading-none">{link.label}</p>
+											</TooltipContent>
+										</Tooltip>
+									</NavigationMenuItem>
+								))}
+							</TooltipProvider>
+						</NavigationMenuList>
+					</NavigationMenu>
 
-				<div className="flex items-center gap-4">
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button variant="outline" size="icon">

@@ -15,6 +15,13 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const animationConfig = {
   glowWidth: 300,
@@ -40,16 +47,45 @@ const chartConfig = {
 
 const AppAreaChart = () => {
   const [xAxis, setXAxis] = React.useState<number | null>(null);
+  const [yearRange, setYearRange] = React.useState<"4" | "3" | "2">("4");
+
+  const filteredData = React.useMemo(() => {
+    const range = parseInt(yearRange, 10);
+    return chartData.slice(-range);
+  }, [yearRange]);
 
   return (
     <Card className="h-full flex flex-col">
       <CardHeader>
-        <CardTitle>
-          Evolução da Nota Média Geral
-        </CardTitle>
-        <CardDescription className="text-md">
-          Comparativo: Escolas Públicas x Privadas
-        </CardDescription>
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center justify-between gap-4">
+            <CardTitle>
+              Evolução da Média Geral
+            </CardTitle>
+            <Select
+              value={yearRange}
+              onValueChange={(value: "4" | "3" | "2") => setYearRange(value)}
+            >
+              <SelectTrigger className="h-7 px-2 py-0 text-xs w-[120px]">
+                <SelectValue placeholder="Período" />
+              </SelectTrigger>
+              <SelectContent align="end">
+                <SelectItem className="text-xs" value="4">
+                  Last 4 years
+                </SelectItem>
+                <SelectItem className="text-xs" value="3">
+                  Last 3 years
+                </SelectItem>
+                <SelectItem className="text-xs" value="2">
+                  Last 2 years
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <CardDescription className="text-md">
+            Públicas x Privadas
+          </CardDescription>
+        </div>
       </CardHeader>
       <CardContent className="flex-1 flex items-center justify-center">
         <ChartContainer
@@ -58,7 +94,7 @@ const AppAreaChart = () => {
         >
           <AreaChart
             accessibilityLayer
-            data={chartData}
+            data={filteredData}
             margin={{ left: 24, right: 24 }}
             onMouseMove={(e) => setXAxis(e.chartX as number)}
             onMouseLeave={() => setXAxis(null)}

@@ -43,7 +43,7 @@ const chartConfig = {
 
 
 const subjectAbbr: Record<string, string> = {
-  "Ciências da Natureza": "CI",
+  "Ciências da Natureza": "CN",
   "Ciências Humanas": "CH",
   "Linguagens e Códigos": "LG",
   "Matemática": "MT",
