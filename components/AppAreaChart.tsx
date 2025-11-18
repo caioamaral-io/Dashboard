@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   Card,
   CardContent,
@@ -9,14 +9,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { TrendingDown } from "lucide-react";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Badge } from "@/components/ui/badge";
 
 const animationConfig = {
   glowWidth: 300,
@@ -56,7 +54,7 @@ const AppAreaChart = () => {
       <CardContent className="flex-1 flex items-center justify-center">
         <ChartContainer
           config={chartConfig}
-          className="h-[260px] w-full flex items-center justify-center"
+          className="h-[360px] w-full flex items-center justify-center"
         >
           <AreaChart
             accessibilityLayer
@@ -66,6 +64,13 @@ const AppAreaChart = () => {
             onMouseLeave={() => setXAxis(null)}
           >
             <CartesianGrid vertical={false} strokeDasharray="3 3" />
+            <YAxis
+              tick={false}
+              tickLine={false}
+              axisLine={false}
+              width={0}
+              domain={["dataMin - 5", "dataMax + 5"]}
+            />
             <XAxis
               dataKey="ano"
               tickLine={false}
@@ -140,7 +145,6 @@ const AppAreaChart = () => {
               fill={"url(#animated-highlighted-grad-Publica)"}
               fillOpacity={0.4}
               stroke="var(--color-Publica)"
-              stackId="a"
               strokeWidth={0.8}
               mask="url(#animated-highlighted-mask)"
             />
@@ -150,7 +154,6 @@ const AppAreaChart = () => {
               fill={"url(#animated-highlighted-grad-Privada)"}
               fillOpacity={0.4}
               stroke="var(--color-Privada)"
-              stackId="a"
               strokeWidth={0.8}
               mask="url(#animated-highlighted-mask)"
             />

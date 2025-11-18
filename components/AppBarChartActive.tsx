@@ -56,7 +56,7 @@ const AppBarChartActive = () => {
 					<span>Participantes do ENEM por Ano - PE</span>
 					<span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-500">
 						<TrendingUp className="h-3 w-3" />
-						<span>+8,4%</span>
+						<span>+26,24%</span>
 					</span>
 				</CardTitle>
 				<CardDescription className="text-md">2020 - 2023</CardDescription>
