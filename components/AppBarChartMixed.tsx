@@ -70,7 +70,7 @@ export function ChartBarMixed() {
     <Card className="h-full flex flex-col">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <span>Desempenho por Cor/Raça - ENEM PE</span>
+          <span>Desempenho Racial - ENEM PE</span>
         </CardTitle>
         <CardDescription className="text-sm">
           {activeData
