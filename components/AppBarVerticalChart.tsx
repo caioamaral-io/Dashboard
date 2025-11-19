@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-export const description = "Notas médias ENEM por disciplina e faixa de renda"
+export const description = "Médias por Renda e Disciplina - ENEM"
 
 const chartConfig = {
   natureza: {
@@ -172,7 +172,7 @@ const AppBarVerticalChart = () => {
         <CardDescription className="text-sm">
           {activeData
             ? `${activeData.faixa}: ${activeData.faixa_renda}`
-            : "Notas médias por faixa de renda e disciplina do ENEM."}
+            : "Médias por Renda e Disciplina - ENEM"}
         </CardDescription>
       </CardHeader>
 
