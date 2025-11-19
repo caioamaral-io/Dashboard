@@ -91,7 +91,7 @@ const AppPieChart = () => {
     <Card className="h-full flex flex-col">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          Renda dos Alunos Nota ≥ 713 (Pública)
+          Renda de Alunos ≥713 – Pública
         </CardTitle>
         <p className="text-sm text-muted-foreground mt-1">
           Faixa: {currentCategoria} - ({currentPercent.toFixed(1)}%)
@@ -204,7 +204,7 @@ const AppPieChart = () => {
         <div className="flex items-center gap-2 leading-none font-medium text-center">
           Superação socioeconômica
         </div>
-        <div className="text-muted-foreground leading-none text-center">
+        <div className="text-muted-foreground leading-none text-sm text-center">
           Alunos de baixa renda se destacam. 
         </div>
       </CardFooter>
