@@ -64,12 +64,11 @@ const AppBarChartActive = () => {
 			<CardContent className="flex justify-center items-center">
 				<ChartContainer
 					config={chartConfig}
-					className="h-[220px] sm:h-[240px] w-full"
+					className="h-[260px] w-full flex justify-center items-center"
 				>
 					<BarChart
 						accessibilityLayer
 						data={chartData}
-						margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
 						onMouseLeave={() => setActiveIndex(null)}
 					>
 						<rect
