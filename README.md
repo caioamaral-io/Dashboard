@@ -29,7 +29,7 @@ Estamos trabalhando na documentação para facilitar o início do uso do dataEdu
 - EvilCharts
 
 ### Hosting
-- Vercel (Dashboard, Documentação)
+- Vercel (Dashboard, Documentação, Pitch)
 
 
 ## License
