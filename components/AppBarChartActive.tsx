@@ -2,14 +2,6 @@
 
 import * as React from "react"
 import { Bar, BarChart, Cell, XAxis, YAxis } from "recharts"
-
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card"
 import {
 	ChartConfig,
 	ChartContainer,
@@ -50,93 +42,93 @@ const AppBarChartActive = () => {
 	}
 
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle className="flex flex-wrap items-center gap-2">
-					<span className="leading-tight">Participantes do ENEM por Ano - PE</span>
-					<span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-[2px] text-[10px] sm:text-[11px] font-medium text-emerald-500">
+		<div id="participantes-enem-por-ano" className="w-full flex flex-col gap-4">
+			<div className="flex flex-col text-left">
+				<h2 className="text-md font-medium flex items-center gap-2">
+					<span>Participantes do ENEM por ano</span>
+					<span className="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-2 py-[2px] text-[10px] sm:text-[11px] font-medium text-blue-500">
 						<TrendingUp className="h-3 w-3" />
 						<span>+26,24%</span>
 					</span>
-				</CardTitle>
-				<CardDescription className="text-sm">2020 - 2023</CardDescription>
-			</CardHeader>
-			<CardContent className="flex justify-center items-center">
-				<ChartContainer
-					config={chartConfig}
-					className="h-[260px] w-full flex justify-center items-center"
+				</h2>
+				<p className="text-sm text-muted-foreground">
+					2020 - 2023
+				</p>
+			</div>
+
+			<ChartContainer
+				config={chartConfig}
+				className="h-[260px] w-full flex justify-center items-center"
+			>
+				<BarChart
+					accessibilityLayer
+					data={chartData}
+					onMouseLeave={() => setActiveIndex(null)}
 				>
-					<BarChart
-						accessibilityLayer
-						data={chartData}
-						onMouseLeave={() => setActiveIndex(null)}
-					>
-						<rect
-							x="0"
-							y="0"
-							width="100%"
-							height="85%"
-							fill="url(#enem-participantes-pattern-dots)"
-						/>
-						<defs>
-							<DottedBackgroundPattern />
-						</defs>
-						<XAxis
-							dataKey="ano"
-							tickLine={false}
-							tickMargin={10}
-							axisLine={false}
-						/>
-						<YAxis hide />
+					<rect
+						x="0"
+						y="0"
+						width="100%"
+						height="85%"
+						fill="url(#enem-participantes-pattern-dots)"
+					/>
+					<defs>
+						<DottedBackgroundPattern />
+					</defs>
+					<XAxis
+						dataKey="ano"
+						tickLine={false}
+						tickMargin={10}
+						axisLine={false}
+					/>
+					<YAxis hide />
 
-						<ChartTooltip
-							cursor={false}
-							content={
-								<ChartTooltipContent
-									hideLabel
-									formatter={(value, name, item) => (
-										<div className="flex min-w-[130px] items-center text-xs text-muted-foreground">
-											<div
-												className="h-2.5 w-2.5 shrink-0 rounded-[2px] mr-2"
-												style={{
-													backgroundColor:
-														barColors[(item?.payload as any)?.ano as number] ??
-														chartConfig.participantes.color,
-												}}
-											/>
+					<ChartTooltip
+						cursor={false}
+						content={
+							<ChartTooltipContent
+								hideLabel
+								formatter={(value, name, item) => (
+									<div className="flex min-w-[130px] items-center text-xs text-muted-foreground">
+										<div
+											className="h-2.5 w-2.5 shrink-0 rounded-[2px] mr-2"
+											style={{
+												backgroundColor:
+													barColors[(item?.payload as any)?.ano as number] ??
+													chartConfig.participantes.color,
+											}}
+										/>
 
-											{chartConfig.participantes.label}
-											<div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
-												{new Intl.NumberFormat('pt-BR').format(value as number)}
-											</div>
+										{chartConfig.participantes.label}
+										<div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
+											{new Intl.NumberFormat('pt-BR').format(value as number)}
 										</div>
-									)}
-								/>
-							}
-						/>
-						<Bar
-							dataKey="participantes"
-							fill="var(--color-participantes)"
-							radius={4}
-							activeIndex={chartData.length - 1}
-						>
-							{chartData.map((entry, index) => (
-								<Cell
-									key={`cell-participantes-${index}`}
-									fill={barColors[entry.ano]}
-									fillOpacity={
-										activeIndex === null ? 1 : activeIndex === index ? 1 : 0.3
-									}
-									stroke={activeIndex === index ? barColors[entry.ano] : ""}
-									onMouseEnter={() => setActiveIndex(index)}
-									className="duration-200"
-								/>
-							))}
-						</Bar>
-					</BarChart>
-				</ChartContainer>
-			</CardContent>
-		</Card>
+									</div>
+								)}
+							/>
+						}
+					/>
+					<Bar
+						dataKey="participantes"
+						fill="var(--color-participantes)"
+						activeIndex={chartData.length - 1}
+					>
+						{chartData.map((entry, index) => (
+							<Cell
+								key={`cell-participantes-${index}`}
+								fill={barColors[entry.ano]}
+								fillOpacity={
+									activeIndex === null ? 1 : activeIndex === index ? 1 : 0.3
+								}
+								stroke={activeIndex === index ? barColors[entry.ano] : ""}
+								onMouseEnter={() => setActiveIndex(index)}
+								className="duration-200"
+							/>
+						))}
+					</Bar>
+				</BarChart>
+			</ChartContainer>
+		</div>
 	)
 }
 

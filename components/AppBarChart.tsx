@@ -1,24 +1,14 @@
 "use client"
 
-
 import * as React from "react"
 import { Bar, BarChart, Cell, XAxis } from "recharts"
 
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-
 
 const chartData = [
   { subject: "Ciências da Natureza", publica: 469, privada: 538 },
@@ -29,18 +19,10 @@ const chartData = [
   { subject: "Média", publica: 513, privada: 614 },
 ]
 
-
 const chartConfig = {
-  publica: {
-    label: "Pública",
-    color: "#8EC5FF",
-  },
-  privada: {
-    label: "Privada",
-    color: "#2B7FFF",
-  },
+  publica: { label: "Pública", color: "#8EC5FF" },
+  privada: { label: "Privada", color: "#2B7FFF" },
 } satisfies ChartConfig
-
 
 const subjectAbbr: Record<string, string> = {
   "Ciências da Natureza": "CN",
@@ -51,24 +33,29 @@ const subjectAbbr: Record<string, string> = {
   "Média": "MÉD",
 }
 
-
 const AppBarChart = () => {
   const [activeIndex, setActiveIndex] = React.useState<number | null>(null)
 
-
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+    <div id="grafico-escolas-publicas-privadas" className="w-full flex flex-col gap-4">
+      <div className="flex flex-col text-left">
+        <h2 className="text-md font-medium flex items-center gap-2">
           <span>Escolas Públicas x Privadas</span>
-        </CardTitle>
-        <CardDescription className="text-sm">Desempenho médio no ENEM - Pernambuco</CardDescription>
-      </CardHeader>
-      <CardContent className="flex justify-center items-center">
-        <ChartContainer config={chartConfig} className="h-[260px] w-full flex justify-center items-center">
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Desempenho médio no ENEM
+        </p>
+      </div>
+
+      <div className="w-full flex justify-center">
+        <ChartContainer
+          config={chartConfig}
+          className="h-[260px] w-full max-w-3xl"
+        >
           <BarChart
             accessibilityLayer
             data={chartData}
+
             onMouseLeave={() => setActiveIndex(null)}
           >
             <rect
@@ -78,9 +65,11 @@ const AppBarChart = () => {
               height="85%"
               fill="url(#enem-public-private-pattern-dots)"
             />
+
             <defs>
               <DottedBackgroundPattern />
             </defs>
+
             <XAxis
               dataKey="subject"
               tickLine={false}
@@ -88,11 +77,13 @@ const AppBarChart = () => {
               axisLine={false}
               tickFormatter={(value: string) => subjectAbbr[value] ?? value}
             />
+
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent indicator="dashed" />}
+              content={<ChartTooltipContent indicator="dashed"/>}
             />
-            <Bar dataKey="publica" fill="var(--color-publica)" radius={4}>
+
+            <Bar dataKey="publica" fill="var(--color-publica)">
               {chartData.map((_, index) => (
                 <Cell
                   key={`cell-publica-${index}`}
@@ -105,7 +96,8 @@ const AppBarChart = () => {
                 />
               ))}
             </Bar>
-            <Bar dataKey="privada" fill="var(--color-privada)" radius={4}>
+
+            <Bar dataKey="privada" fill="var(--color-privada)">
               {chartData.map((_, index) => (
                 <Cell
                   key={`cell-privada-${index}`}
@@ -120,11 +112,10 @@ const AppBarChart = () => {
             </Bar>
           </BarChart>
         </ChartContainer>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
-
 
 const DottedBackgroundPattern = () => {
   return (
@@ -147,6 +138,4 @@ const DottedBackgroundPattern = () => {
   )
 }
 
-
-export default AppBarChart;
-
+export default AppBarChart

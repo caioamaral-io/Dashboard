@@ -4,13 +4,6 @@ import * as React from "react"
 import { Bar, BarChart, XAxis, YAxis } from "recharts"
 
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
@@ -129,54 +122,54 @@ const AppBarVerticalChart = () => {
   }, [activeIndex])
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex flex-row justify-between">
-          <CardTitle>
+    <div id="notas-vs-renda" className="space-y-4 p-6">
+      <div>
+        <div className="flex flex-row justify-between items-center mb-2">
+          <h3 className="text-md font-medium leading-none tracking-tight">
             Média Notas por Prova x Renda Familiar
-          </CardTitle>
+          </h3>
           <Select
             value={activeProperty}
             onValueChange={(value: ActiveProperty) => {
               setActiveProperty(value)
             }}
           >
-            <SelectTrigger className="text-xs h-7 px-2 py-0 w-[110px]">
+            <SelectTrigger className="text-xs h-7 px-2 py-0 w-[110px] rounded-none">
               <SelectValue placeholder="Selecionar disciplina" />
             </SelectTrigger>
-            <SelectContent align="end">
+            <SelectContent align="end" className="rounded-none">
               <SelectGroup>
                 <SelectLabel>Disciplinas</SelectLabel>
-                <SelectItem className="text-xs" value="all">
+                <SelectItem className="text-xs rounded-none" value="all">
                   Todas
                 </SelectItem>
-                <SelectItem className="text-xs" value="natureza">
+                <SelectItem className="text-xs rounded-none" value="natureza">
                   Natureza
                 </SelectItem>
-                <SelectItem className="text-xs" value="humanas">
+                <SelectItem className="text-xs rounded-none" value="humanas">
                   Humanas
                 </SelectItem>
-                <SelectItem className="text-xs" value="linguagens">
+                <SelectItem className="text-xs rounded-none" value="linguagens">
                   Linguagens
                 </SelectItem>
-                <SelectItem className="text-xs" value="matematica">
+                <SelectItem className="text-xs rounded-none" value="matematica">
                   Matemática
                 </SelectItem>
-                <SelectItem className="text-xs" value="redacao">
+                <SelectItem className="text-xs rounded-none" value="redacao">
                   Redação
                 </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
         </div>
-        <CardDescription className="text-sm">
+        <p className="text-sm text-muted-foreground">
           {activeData
             ? `${activeData.faixa}: ${activeData.faixa_renda}`
             : "Médias por Renda e Disciplina - ENEM"}
-        </CardDescription>
-      </CardHeader>
+        </p>
+      </div>
 
-      <CardContent className="flex justify-center items-center">
+      <div className="flex justify-center items-center">
         <ChartContainer
           config={chartConfig}
           className="h-[220px] sm:h-[260px] w-full"
@@ -227,9 +220,8 @@ const AppBarVerticalChart = () => {
               className="dark:text-[#1A1A1C] text-[#E4E4E7]"
               dataKey="natureza"
               fill="var(--color-natureza)"
-              radius={4}
               shape={<CustomGradientBar activeProperty={activeProperty} />}
-              background={{ fill: "currentColor", radius: 4 }}
+              background={{ fill: "currentColor"}}
               overflow="visible"
             />
             <Bar
@@ -238,7 +230,6 @@ const AppBarVerticalChart = () => {
               shape={<CustomGradientBar activeProperty={activeProperty} />}
               dataKey="humanas"
               fill="var(--color-humanas)"
-              radius={4}
               overflow="visible"
             />
             <Bar
@@ -247,7 +238,6 @@ const AppBarVerticalChart = () => {
               shape={<CustomGradientBar activeProperty={activeProperty} />}
               dataKey="linguagens"
               fill="var(--color-linguagens)"
-              radius={4}
               overflow="visible"
             />
             <Bar
@@ -256,7 +246,6 @@ const AppBarVerticalChart = () => {
               shape={<CustomGradientBar activeProperty={activeProperty} />}
               dataKey="matematica"
               fill="var(--color-matematica)"
-              radius={4}
               overflow="visible"
             />
             <Bar
@@ -265,14 +254,13 @@ const AppBarVerticalChart = () => {
               shape={<CustomGradientBar activeProperty={activeProperty} />}
               dataKey="redacao"
               fill="var(--color-redacao)"
-              radius={4}
               overflow="visible"
             />
 
           </BarChart>
         </ChartContainer>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
 

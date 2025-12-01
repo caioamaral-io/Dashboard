@@ -5,18 +5,12 @@ import type { SVGProps } from "react"
 import { Bar, BarChart, XAxis } from "recharts"
 import { AnimatePresence, motion } from "framer-motion"
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 import { ChartConfig, ChartContainer } from "@/components/ui/chart"
 import { cn } from "@/lib/utils"
 import { JetBrains_Mono } from "next/font/google"
 
-export const description = "Distribuição de participantes por faixa de renda (Q006)"
+export const description =
+  "Distribuição de participantes por faixa de renda (Q006)"
 
 const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -64,26 +58,27 @@ const AppBarChartInteractive = () => {
   const currentLabel = activeData?.faixa_renda ?? "Até 1.320"
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <span
-            className={cn(
-              jetBrainsMono.className,
-              "text-2xl tracking-tighter",
-            )}
-          >
-            {currentValue.toFixed(1)}%
-          </span>
-        </CardTitle>
-        <CardDescription className="text-sm">
+    <div  id="grafico-distribuicao-renda" className="flex flex-col gap-3">
+      <div>
+        <h2
+          className={cn(
+            jetBrainsMono.className,
+            "text-2xl tracking-tighter font-medium",
+          )}
+        >
+          {currentValue.toFixed(1)}%
+        </h2>
+
+        <p className="text-sm">
           Distribuição de participantes por faixa de renda (Q006)
-        </CardDescription>
-        <p className="text-md text-muted-foreground mt-1">
+        </p>
+
+        <p className="text-sm text-muted-foreground mt-1">
           Faixa selecionada: {currentLabel}
         </p>
-      </CardHeader>
-      <CardContent className="flex justify-center items-center">
+      </div>
+
+      <div className="flex justify-center items-center">
         <AnimatePresence mode="wait">
           <ChartContainer
             config={chartConfig}
@@ -102,6 +97,7 @@ const AppBarChartInteractive = () => {
                 interval={0}
                 tickFormatter={(_, index) => String.fromCharCode(65 + index)}
               />
+
               <Bar
                 dataKey="percentual"
                 fill="var(--secondary-foreground)"
@@ -115,8 +111,8 @@ const AppBarChartInteractive = () => {
             </BarChart>
           </ChartContainer>
         </AnimatePresence>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
 
@@ -151,6 +147,7 @@ const CustomBar = (props: CustomBarProps) => {
         height={height}
         fill={fill}
       />
+
       {isActive && (
         <motion.text
           style={{ willChange: "transform, opacity" }}

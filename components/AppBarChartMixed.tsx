@@ -4,13 +4,6 @@ import * as React from "react"
 import { Bar, BarChart, Cell, XAxis, YAxis } from "recharts"
 
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
@@ -20,33 +13,13 @@ import {
 export const description = "A mixed bar chart"
 
 const chartConfig = {
-  nota_media: {
-    label: "Nota Média",
-  },
-  Branca: {
-    label: "Branca",
-    color: "#8EC5FF",
-  },
-  Nao_declarado: {
-    label: "Omisso",
-    color: "#2B7FFF",
-  },
-  Parda: {
-    label: "Parda",
-    color: "#155DFC",
-  },
-  Amarela: {
-    label: "Amarela",
-    color: "#1447E6",
-  },
-  Preta: {
-    label: "Preta",
-    color: "#193CB8",
-  },
-  Indígena: {
-    label: "Indígena",
-    color: "#0F1F6E",
-  },
+  nota_media: { label: "Nota Média" },
+  Branca: { label: "Branca", color: "#8EC5FF" },
+  Nao_declarado: { label: "Omisso", color: "#2B7FFF" },
+  Parda: { label: "Parda", color: "#155DFC" },
+  Amarela: { label: "Amarela", color: "#1447E6" },
+  Preta: { label: "Preta", color: "#193CB8" },
+  Indígena: { label: "Indígena", color: "#0F1F6E" },
 } satisfies ChartConfig
 
 const chartData = [
@@ -67,31 +40,24 @@ export function ChartBarMixed() {
   }, [activeIndex])
 
   return (
-    <Card className="h-full flex flex-col">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <span>Desempenho Racial - ENEM PE</span>
-        </CardTitle>
-        <CardDescription className="text-sm">
+    <div id="desempenho-racial" className="h-full flex flex-col gap-4">
+      <div>
+        <h2 className="text-md font-medium">Desempenho Racial</h2>
+        <p className="text-sm text-muted-foreground mt-1">
           {activeData
             ? `${activeData.cor_raca}: ${activeData.nota_media.toFixed(1)}`
             : "Média de notas por cor/raça"}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="flex-1 flex items-center justify-center">
+        </p>
+      </div>
+
+      <div className="w-full flex justify-center">
         <ChartContainer
           config={chartConfig}
-          className="h-[240px] w-full flex items-center justify-center"
+          className="h-[260px] w-full max-w-3xl"
         >
           <BarChart
             accessibilityLayer
             data={chartData}
-            margin={{
-              left: 10,
-              top: 10,
-              right: 10,
-              bottom: 30,
-            }}
             onMouseLeave={() => setActiveIndex(null)}
           >
             <rect
@@ -104,6 +70,7 @@ export function ChartBarMixed() {
             <defs>
               <DottedBackgroundPattern />
             </defs>
+
             <XAxis
               dataKey="cor_raca"
               type="category"
@@ -116,12 +83,15 @@ export function ChartBarMixed() {
                 chartConfig[value as keyof typeof chartConfig]?.label || value
               }
             />
+
             <YAxis hide />
+
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="nota_media" radius={4}>
+
+            <Bar dataKey="nota_media">
               {chartData.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
@@ -137,8 +107,8 @@ export function ChartBarMixed() {
             </Bar>
           </BarChart>
         </ChartContainer>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
 
